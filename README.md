@@ -1,47 +1,35 @@
-# FullStackApp
+# Member Management System
 
-FullStackApp is a web application built with Spring Boot for the backend and React for the frontend. It provides a seamless full-stack development experience for building modern web applications.
+This is a Member Management System developed using Java Spring Boot, providing RESTful API endpoints and integrating with a database using Spring Data JPA. The frontend is built with Vue 3, Vite, and TypeScript, allowing for CRUD operations on member data.
 
 ## Table of Contents
 
 - [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Endpoints](#api-endpoints)
+- [Frontend Setup](#frontend-setup)
+- [License](#license)
 
 ## Features
 
-- **Spring Boot Backend:**
-  - RESTful API endpoints.
-  - Database integration with Spring Data JPA.
+- User registration
+- User login
+- View user details
+- Update user information
+- Delete user accounts
+- Integrated frontend and backend for seamless interaction
 
-- **React Frontend:**
-  - Responsive and dynamic user interface.
-  - State management using React Hooks.
-  - Integration with backend APIs.
+## Tech Stack
 
-- **Full Stack:**
-  - Seamless integration between the backend and frontend.
-  - Modern and efficient development workflow.
+- **Backend**: Java, Spring Boot, Spring Data JPA
+- **Frontend**: Vue 3, Vite, TypeScript
+- **Database**: MySQL (or your chosen database)
 
-## Prerequisites
+## Installation
 
-Before you begin, ensure you have met the following requirements:
-
-- Java Development Kit (JDK) installed.
-- Node.js and npm installed.
-- IDE with support for Spring Boot and React development.
-
-## Getting Started
-
-Follow these steps to set up and run the FullStackApp locally:
-
-1. Clone the backend repository:
+1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/arjungautam1/fullstack-backend.git
-
-1. Clone the Frontend repository:
-
-   ```bash
-    git clone https://github.com/arjungautam1/fullstack-frontend.git
-
+   https://github.com/yoyoandop/fullstack-membersystem.git

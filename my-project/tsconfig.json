@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es6",                          // 指定 ECMAScript 目標版本
+    "module": "esnext",                       // 指定使用的模塊系統
+    "strict": true,                           // 啟用所有嚴格類型檢查選項
+    "esModuleInterop": true,                  // 使 CommonJS 模塊可以默認導入
+    "skipLibCheck": true,                     // 跳過庫文件的類型檢查
+    "forceConsistentCasingInFileNames": true, // 強制檔名的一致性
+    "baseUrl": "./src",                       // 基本路徑
+    "paths": {
+      "@/*": ["*"]                            // 確保支持使用 @ 作為 src 的別名
+    },
+    "jsx": "preserve",                        // 讓 JSX 被保留供後續轉譯
+    "moduleResolution": "node",                // 使用 Node.js 的模塊解析策略
+    "resolveJsonModule": true,                 // 允許導入 JSON 模塊
+    "lib": ["esnext", "dom"]                  // 指定要包含在編譯中的庫
+  },
+  "include": [
+    "src/**/*.ts",                             // 包含所有 TypeScript 檔案
+    "src/**/*.tsx",                            // 包含所有 TSX 檔案
+    "src/**/*.vue"                             // 包含所有 Vue 檔案
+  ],
+  "exclude": [
+    "node_modules",                            // 排除 node_modules 目錄
+    "**/*.spec.ts"                             // 排除所有測試檔案
+  ]
+}

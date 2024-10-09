@@ -13,7 +13,8 @@
     "jsx": "preserve",                        // 讓 JSX 被保留供後續轉譯
     "moduleResolution": "node",                // 使用 Node.js 的模塊解析策略
     "resolveJsonModule": true,                 // 允許導入 JSON 模塊
-    "lib": ["esnext", "dom"]                  // 指定要包含在編譯中的庫
+    "lib": ["esnext", "dom"],                 // 指定要包含在編譯中的庫
+    "types": ["node"]                          // 添加 Node.js 的型別
   },
   "include": [
     "src/**/*.ts",                             // 包含所有 TypeScript 檔案

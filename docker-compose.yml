@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .                     # 指向根目錄
+      dockerfile: Dockerfile          # 後端 Dockerfile
+    ports:
+      - "8080:8080"                   # 映射後端端口
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/fullstackdokermysql
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=springboot
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: springboot
+      MYSQL_DATABASE: fullstackdokermysql
+
+  frontend:
+    build:
+      context: ./my-project  # 確保這裡是正確的上下文
+    ports:
+      - "3000:3000"  # 可選，根據需要映射
+      - "4173:4173"  # 映射 Vite 預覽端口
+    command: npm run dev -- --host 0.0.0.0  # 或根據你的 package.json 更新這個命令

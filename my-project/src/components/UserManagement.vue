@@ -13,9 +13,10 @@
       <li v-for="user in users" :key="user.id">
         {{ user.username }} - {{ user.email }}
         <button @click="editUser(user)">Edit</button>
-        <button @click="removeUser(user.id)">Delete</button>
+        <button @click="removeUser(user.id as number)">delete</button>
       </li>
     </ul>
+
 
     <div v-if="editMode && currentUser">
       <h3>Edit User</h3>
@@ -94,6 +95,7 @@ export default defineComponent({
         console.error('Current user does not exist, unable to update.');
       }
     };
+
 
     const removeUser = async (id: number) => {
       try {

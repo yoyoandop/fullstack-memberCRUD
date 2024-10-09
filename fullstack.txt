@@ -1,0 +1,205 @@
+chose spring web
+Spring Boot 2.6.7
+if use Maven,pom.xml + JPA依賴 
+
+    <!-- Spring Boot Starter Data JPA -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+
+ add MySQL
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.33</version> <!-- 使用最新版本 -->
+</dependency>
+
+application.properties
+MySQL
+spring.jpa.hibernate.ddl-auto=update
+spring.datasource.url=jdbc:mysql://localhost:3306/fullstack 
+spring.datasource.username=root
+spring.datasource.password=springboot
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+
+shift+F6 更改名稱
+
+npm run dev
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@Component is make a bean
+@Autowired 
+@Qualifier 指定哪個物件
+@PostConstruct 初始化
+@Value 指定值
+
+pom.xml spring AOP
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-aop</artifactId>
+</dependency>
+
+@Aspect
+Spring AOP 以前最常被用在以下三個地方：
+
+權限驗證
+統一的 Exception 處理
+log 記錄
+
+
+
+HTTP と HTTPS の違いについて説明します。
+
+HTTP（Hypertext Transfer Protocol）
+用途：HTTP は、ウェブページの閲覧など、ネットワーク上でデータを送受信するための標準プロトコルです。
+ポート：デフォルトではポート 80 を使用します。
+セキュリティ：HTTP では、データが暗号化されずに送信されます。そのため、データはネットワーク上で平文で送信され、第三者に容易に傍受される可能性があります。
+HTTPS（Hypertext Transfer Protocol Secure）
+用途：HTTPS は、HTTP の安全なバージョンであり、特にセンシティブな情報（銀行情報、ログイン認証情報など）を安全に送信するために使用されます。
+ポート：デフォルトではポート 443 を使用します。
+セキュリティ：HTTPS は SSL/TLS プロトコルを使用して、データを暗号化します。これにより、データはネットワーク上で暗号化され、第三者が簡単に見ることや改ざんすることができません。
+HTTPS の動作原理
+接続の確立：
+
+クライアント（例えばブラウザ）が HTTPS リクエストをサーバーに送信し、サーバーは SSL/TLS 証明書を含む応答を返します。
+証明書の検証：
+
+クライアントはサーバーの証明書が信頼できる証明機関（CA）によって発行されたものであることを確認します。これにより、サーバーの正当性が保証されます。
+暗号化の協議：
+
+クライアントとサーバーは、データ送信に使用する暗号化アルゴリズムと鍵を協議します。
+データの送信：
+
+協議された暗号化アルゴリズムを使用してデータを暗号化し、HTTPS チャンネルを通じて送信します。これにより、データは暗号化され、第三者が簡単に解読や改ざんすることができません。
+主な違い
+セキュリティ：
+
+HTTP：データは平文で送信され、傍受や改ざんのリスクがあります。
+HTTPS：データは暗号化されて送信され、セキュリティが強化されます。
+使用ポート：
+
+HTTP：デフォルトでポート 80。
+HTTPS：デフォルトでポート 443。
+証明書：
+
+HTTP：証明書は不要です。
+HTTPS：SSL/TLS 証明書が必要で、セキュリティと暗号化を提供します。
+HTTPS の使用は、特にセンシティブな情報を取り扱う場合において、ウェブサイトやアプリケーションのセキュリティを確保するためのベストプラクティスです。
+
+
+「三回握手（さんかいあくしゅ）メカニズム」は、ネットワーク通信プロトコルであるTCP（Transmission Control Protocol）において、接続を確立するためのプロセスを指します。このプロセスは、通信を開始する前に、クライアントとサーバーが互いに信号を交換し、接続が安定していることを確認するためのものです。
+
+三回握手の流れ
+SYN (Synchronize)
+
+クライアントがサーバーに接続要求を送ります。この接続要求は「SYN」フラグがセットされており、クライアントのシーケンス番号が含まれています。
+SYN-ACK (Synchronize-Acknowledge)
+
+サーバーはクライアントからのSYNパケットを受け取ると、その受信を確認するために「SYN-ACK」パケットをクライアントに送ります。これは、サーバーが受け取ったことを確認し、サーバー側のシーケンス番号も提供します。
+ACK (Acknowledge)
+
+クライアントはサーバーからのSYN-ACKパケットを受け取り、その受信を確認するために「ACK」パケットを送ります。この段階で、両者間の接続が確立され、データ通信を開始する準備が整います。
+日本語での説明例
+クライアントがサーバーに「こんにちは！」と言います（SYNパケットの送信）。
+サーバーは「こんにちは！返事ありがとう！」と応えます（SYN-ACKパケットの送信）。
+クライアントが「返事を受け取ったよ！よろしくね！」と返します（ACKパケットの送信）。
+この三回の信号交換により、通信が確立され、安全にデータを送受信できる状態になります。
+
+TCP の三回握手（スリーウェイハンドシェイク）は、接続を確立するためのプロセスで、通信の信頼性を保証するために必要です。「三回」という手順があるのは、各ステップが特定の目的を持ち、接続の確立を正しく行うためです。以下にその説明をします。
+
+三回握手の流れ
+第一次握手（SYN）
+
+クライアントからの送信：クライアントがサーバーに対して SYN（Synchronize）パケットを送信します。このパケットにはクライアントの初期シーケンス番号（ISN）が含まれています。
+目的：サーバーに対して接続を開始したい旨を通知し、クライアントの初期シーケンス番号を提示します。
+第二次握手（SYN-ACK）
+
+サーバーからの応答：サーバーがクライアントの SYN パケットを受信すると、SYN-ACK（Synchronize-Acknowledge）パケットで応答します。このパケットにはサーバーの初期シーケンス番号と、クライアントの SYN パケットの確認が含まれています。
+目的：サーバーが接続要求を受け入れたことを確認し、サーバーのシーケンス番号を提供します。
+第三次握手（ACK）
+
+クライアントからの確認：クライアントがサーバーの SYN-ACK パケットを受信すると、ACK（Acknowledge）パケットをサーバーに送信します。このパケットでサーバーの SYN パケットの確認を行い、クライアントも接続の準備ができたことを示します。
+目的：サーバーからのシーケンス番号を受け取ったことを確認し、接続の確立を完了します。
+三回握手が必要な理由
+双方向の確認：
+
+最初の握手でクライアントがサーバーに接続要求を通知し、第二次握手でサーバーがその要求を確認します。第三次握手でクライアントがサーバーの確認を受け入れ、双方の接続準備が整います。
+シーケンス番号の調整：
+
+各握手でシーケンス番号が調整され、通信中のデータパケットの順序と信頼性が保証されます。これにより、データの損失や再送などの問題を処理できます。
+重複接続の防止：
+
+三回握手により、重複した接続要求や古いデータパケットを防ぎ、接続の信頼性と安定性を確保します。
+接続の協議：
+
+各ステップで接続のパラメータが協議され、接続の初期化に問題がないことが確認されます。これにより、データ転送中に不整合が発生するのを防ぎます。
+まとめ
+三回握手は、通信の信頼性を保証し、接続の安定性を確保するために設計されたプロセスです。各ステップが特定の問題を解決し、正しい接続の確立を支援します。
+
+
+
+
+
+
+
+
+Vue 3 使用 Proxy，它可以攔截幾乎所有對對象的操作，包括屬性添加、刪除、訪問和設置，甚至可以攔截對象的 in 操作符或 for...in 循環。這使得 Vue 3 的響應式系統更加完整，並且不再需要特定的 API 來處理對象屬性或數組的變化。
+
+
+
+Promise、fetch、async 和 await 是現代 JavaScript 中處理異步操作的關鍵技術。它們解決了異步操作（如網絡請求、計時器、文件讀寫等）在代碼中的處理方式，使得代碼更加易於理解和維護。
+
+proxy 是一個配置選項，用於將前端開發伺服器中的 API 請求轉發到另一個伺服器。這在開發過程中非常有用，特別是當你的前端應用程序和後端 API 運行在不同的端口或域名下時。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+src-main-java-com.codewitharjun.fullstackbackend-controller-UserController
+						-model-User
+						-repository-FullstackBackendApplication
+src-main-java-fribtend-index.html
+		      -sceipt.js
+		      -style.css
+
+src-main-java-WebConfig-WebConfig
+src-main-resources-application.properties

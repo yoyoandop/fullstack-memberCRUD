@@ -1,0 +1,121 @@
+第一步 根目錄建立Dockerfile檔案
+# 使用 OpenJDK 基礎映像
+FROM openjdk:17-jdk-alpine
+
+# 設定工作目錄
+WORKDIR /app
+
+# 複製 Maven 編譯好的 jar 文件到容器中
+COPY target/fullstack-membersystem.jar /app/fullstack-membersystem.jar
+
+# 曝露應用運行的端口
+EXPOSE 8080
+
+# 運行 jar 文件
+ENTRYPOINT ["java", "-jar", "/app/fullstack-membersystem.jar"]
+
+第二步
+打開終端或命令提示符。
+切換到你的 Spring Boot 專案根目錄 fullstack-membersystem/：
+cd /path/to/fullstack-membersystem/
+執行打包命令：
+mvn clean package
+打完後生成target目錄
+
+第三步
+cd target
+在專案目錄做java -jar fullstack-membersystem-0.0.1-SNAPSHOT.jar
+
+在專案目錄做docker-compose build
+
+在專案目錄做docker-compose up
+
+查看日誌docker logs fullstack-membersystem-backend-1
+
+
+前端docker
+
+1.在前端資料夾加入Dockerfile 文件
+# 使用官方 Node.js 映像作為構建階段
+FROM node:16 AS build-stage
+
+# 設置工作目錄
+WORKDIR /app
+
+# 複製 package.json 和 package-lock.json 到容器中
+COPY package*.json ./
+
+# 安裝依賴
+RUN npm install
+
+# 複製所有應用程式文件
+COPY . .
+
+# 構建前端應用程式
+RUN npm run build
+
+# 使用 Nginx 作為運行階段
+FROM nginx:alpine AS production-stage
+
+# 複製前端構建結果到 Nginx 的靜態資源目錄
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+
+# 暴露端口（通常 Nginx 在 80 端口運行）
+EXPOSE 80
+
+# 啟動 Nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+第二步修改 docker-compose.yml 文件
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/yourdbname
+      - SPRING_DATASOURCE_USERNAME=yourusername
+      - SPRING_DATASOURCE_PASSWORD=yourpassword
+    depends_on:
+      - db
+    networks:
+      - fullstack-network
+
+  db:
+    image: mysql:8
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: springboot
+      MYSQL_DATABASE: fullstackdokermysql
+    networks:
+      - fullstack-network
+
+  frontend:
+    build: ./my-project  # 指向前端應用的 Dockerfile 路徑
+    ports:
+      - "80:80"  # 將前端應用的 80 端口映射到主機
+    depends_on:
+      - backend
+    networks:
+      - fullstack-network
+
+networks:
+  fullstack-network:
+    driver: bridge
+
+第三步
+在cmd的C:\Users\POWER USER\OneDrive\桌面\github\fullstack-membersystem 執行docker-compose up --build -d
+
+
+
+
+
+
+
+
+
+
+

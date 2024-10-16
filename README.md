@@ -32,4 +32,6 @@ The frontend is built using Vue 3 and Vite. Make sure you have Node.js installed
 npm run dev
 
 ## docker
-docker-compose up --build
+use Docker Desktop
+docker-compose up --build -d
+docker-compose up

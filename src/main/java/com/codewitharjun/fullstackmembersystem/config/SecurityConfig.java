@@ -1,24 +1,62 @@
 package com.codewitharjun.fullstackmembersystem.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.codewitharjun.fullstackmembersystem.filter.JwtRequestFilter;
+import com.codewitharjun.fullstackmembersystem.service.MyUserDetailsService; // 使用 MyUserDetailsService
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final MyUserDetailsService userDetailsService; // 使用 MyUserDetailsService
+    private final JwtRequestFilter jwtRequestFilter;
+
+    // 构造函数注入
+    public SecurityConfig(MyUserDetailsService userDetailsService, JwtRequestFilter jwtRequestFilter) {
+        this.userDetailsService = userDetailsService;
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable() // 禁用CSRF保護
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/register").permitAll() // 允許訪問註冊端點
-                .antMatchers("/users").permitAll() // 允許訪問User這個model 做查詢
-                .antMatchers("/user").permitAll() // 允許訪問User這個model 做查詢
-                .antMatchers("/user/{id}").permitAll() // 允許訪問User這個model 做查詢
-                .anyRequest().authenticated() // 其他請求需要身份驗證
+                .antMatchers("/api/v1/register").permitAll() // 允许所有用户访问注册端点
+                .antMatchers("/auth/login").permitAll() // 允许所有用户访问登录端点
+                .anyRequest().authenticated() // 其他请求需要身份验证
                 .and()
-                .httpBasic(); // 使用基本身份驗證
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 禁用会话管理，使用 JWT
+
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

@@ -3,22 +3,42 @@ package com.codewitharjun.fullstackmembersystem.service;
 import com.codewitharjun.fullstackmembersystem.model.Userdata;
 import com.codewitharjun.fullstackmembersystem.repository.UserdataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder; // 引入 PasswordEncoder
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 @Service
 public class UserdataService {
 
-    @Autowired
-    private UserdataRepository userdataRepository;
+    private final UserdataRepository userdataRepository;
+    private final PasswordEncoder passwordEncoder; // 引入 PasswordEncoder
 
-    // 註冊新用戶
+    // 使用构造函数注入
+    @Autowired
+    public UserdataService(UserdataRepository userdataRepository, PasswordEncoder passwordEncoder) {
+        this.userdataRepository = userdataRepository;
+        this.passwordEncoder = passwordEncoder; // 初始化 PasswordEncoder
+    }
+
+    // 注册新用户
     public String registerUser(Userdata userdata) {
-        // 檢查 email 是否已經存在
+        // 检查 email 是否已经存在
         if (userdataRepository.findByEmail(userdata.getEmail()) != null) {
-            return "Email 已經註冊";
+            return "Email 已经注册";
         }
-        // 保存新用戶資料
+
+        // 如果角色为空，则分配默认角色
+        if (userdata.getRoles() == null || userdata.getRoles().isEmpty()) {
+            userdata.setRoles(Collections.singletonList("ROLE_USER")); // 默认角色
+        }
+
+        // 对密码进行加密
+        String encodedPassword = passwordEncoder.encode(userdata.getPassword());
+        userdata.setPassword(encodedPassword); // 设置加密后的密码
+
+        // 保存新用户资料
         userdataRepository.save(userdata);
-        return "註冊成功";
+        return "注册成功";
     }
 }

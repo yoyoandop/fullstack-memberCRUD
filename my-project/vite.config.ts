@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-const backendUrl = process.env.BACKEND_URL || 'http://backend:8080'; // 使用 Docker Compose 的後端服務名稱
-//const backendUrl = process.env.BACKEND_URL || 'http://localhost:8080';  //使用本地端開發環境localhost
+//const backendUrl = process.env.BACKEND_URL || 'http://backend:8080'; // 使用 Docker Compose 的後端服務名稱
+const backendUrl = process.env.BACKEND_URL || 'http://localhost:8080';  //使用本地端開發環境localhost
 export default defineConfig({
   plugins: [vue()],
   server: {

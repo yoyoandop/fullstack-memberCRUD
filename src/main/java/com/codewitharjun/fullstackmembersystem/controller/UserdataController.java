@@ -6,7 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping()
+@CrossOrigin("http://localhost:3000") //表示只能接受來自前端端口"http://localhost:3000"的請求
 public class UserdataController {
 
     private final UserdataService userdataService;

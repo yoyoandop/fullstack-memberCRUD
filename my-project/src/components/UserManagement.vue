@@ -1,11 +1,14 @@
 <template>
   <div>
     <h2>User Management</h2>
+    <!-- 導航到註冊頁面 -->
+    <router-link to="/register">Go to Register</router-link>
+
     <form @submit.prevent="addUser">
       <input v-model="newUser.username" placeholder="Username" required />
       <input v-model="newUser.password" type="password" placeholder="Password" required />
       <input v-model="newUser.email" type="email" placeholder="Email" required />
-      <button type="submit">Add 123User</button>
+      <button type="submit">Add User</button>
     </form>
 
     <button @click="fetchUsers">Fetch Users</button>
@@ -13,10 +16,9 @@
       <li v-for="user in users" :key="user.id">
         {{ user.username }} - {{ user.email }}
         <button @click="editUser(user)">Edit</button>
-        <button @click="removeUser(user.id as number)">delete</button>
+        <button @click="removeUser(user.id as number)">Delete</button>
       </li>
     </ul>
-
 
     <div v-if="editMode && currentUser">
       <h3>Edit User</h3>
@@ -24,10 +26,9 @@
         <input v-model="currentUser.username" placeholder="Username" required />
         <input v-model="currentUser.password" type="password" placeholder="Password" required />
         <input v-model="currentUser.email" type="email" placeholder="Email" required />
-        <button type="submit">更新用戶</button>
+        <button type="submit">Update User</button>
       </form>
     </div>
-
   </div>
 </template>
 
@@ -51,25 +52,17 @@ export default defineComponent({
       }
     };
 
-
-
     const addUser = async () => {
       console.log('Add User function called'); // 確認函數被調用
 
       try {
-
         await createUser(newUser.value);
-
         newUser.value = { username: '', password: '', email: '' }; // 清空表單
         await fetchUsers(); // 獲取更新的用戶列表
-
-
       } catch (error) {
         console.error('Failed to add user:', error);
       }
     };
-
-
 
     const editUser = (user: User) => {
       currentUser.value = { ...user }; // Copy user data for editing
@@ -96,7 +89,6 @@ export default defineComponent({
       }
     };
 
-
     const removeUser = async (id: number) => {
       try {
         await deleteUser(id);
@@ -117,7 +109,7 @@ export default defineComponent({
       fetchUsers,
       addUser,
       editUser,
-      updateCurrentUser, // Updated function name
+      updateCurrentUser,
       removeUser,
     };
   },

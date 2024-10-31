@@ -1,17 +1,14 @@
 <template>
   <div id="app">
-    <UserManagement />
+    <router-view /> <!-- 在這裡顯示當前路由對應的組件 -->
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import UserManagement from './components/UserManagement.vue';
 
 export default defineComponent({
-  components: {
-    UserManagement
-  }
+  name: 'App',
 });
 </script>
 

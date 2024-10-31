@@ -38,8 +38,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwt = null;
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwt = authorizationHeader.substring(7);
-            username = jwtUtil.extractUsername(jwt);
+            jwt = authorizationHeader.substring(7); // 移除 "Bearer " 前缀，得到实际的 JWT
+            username = jwtUtil.extractUsername(jwt);// 从 JWT 中提取用户名
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

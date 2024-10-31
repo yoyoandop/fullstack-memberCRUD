@@ -45,8 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/register").permitAll() // 允许所有用户访问注册端点
+                .antMatchers("/register").permitAll() // 允许所有用户访问注册端点
                 .antMatchers("/auth/login").permitAll() // 允许所有用户访问登录端点
+                //.antMatchers("/users").permitAll()
+                .antMatchers("/users").hasAuthority("admin") // 只有 admin 角色的用户可以访问 /users
+                .antMatchers("/user").permitAll()
+                .antMatchers("/user/{id}").permitAll()
                 .anyRequest().authenticated() // 其他请求需要身份验证
                 .and()
                 .sessionManagement()

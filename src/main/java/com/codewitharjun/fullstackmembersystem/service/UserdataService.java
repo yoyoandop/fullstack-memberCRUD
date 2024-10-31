@@ -12,7 +12,7 @@ import java.util.Collections;
 public class UserdataService {
 
     private final UserdataRepository userdataRepository;
-    private final PasswordEncoder passwordEncoder; // 引入 PasswordEncoder
+    private final PasswordEncoder passwordEncoder; // 引入 PasswordEncoder 做密碼加密
 
     // 使用构造函数注入
     @Autowired

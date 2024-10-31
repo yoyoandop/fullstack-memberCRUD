@@ -23,11 +23,6 @@ public class Userdata implements UserDetails {
     // Constructors
     public Userdata() {}
 
-    public Userdata(String email, String password, List<String> roles) {
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-    }
 
     // Getters and Setters
     public Long getId() {

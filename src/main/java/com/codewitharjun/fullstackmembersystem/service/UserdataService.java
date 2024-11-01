@@ -5,6 +5,7 @@ import com.codewitharjun.fullstackmembersystem.repository.UserdataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder; // 引入 PasswordEncoder
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 import java.util.Collections;
 
@@ -20,6 +21,18 @@ public class UserdataService {
         this.userdataRepository = userdataRepository;
         this.passwordEncoder = passwordEncoder; // 初始化 PasswordEncoder
     }
+
+
+    public Long getUserIdByEmail(String email) {
+        Userdata user = userdataRepository.findByEmail(email);
+        return (user != null) ? user.getId() : null; // 返回用户 ID 或 null
+    }
+
+    public List<String> getRolesByEmail(String email) {
+        Userdata user = userdataRepository.findByEmail(email);
+        return (user != null) ? user.getRoles() : null; // 返回用户角色
+    }
+
 
     // 注册新用户
     public String registerUser(Userdata userdata) {

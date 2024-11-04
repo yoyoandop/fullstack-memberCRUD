@@ -5,8 +5,7 @@ import java.util.List; // 確保導入 List
 
 public record AuthRequest(
         @JsonProperty("email") String email,
-        @JsonProperty("password") String password,
-        @JsonProperty("roles") List<String> roles // 新增角色欄位
+        @JsonProperty("password") String password
 ) {
     // 記錄類不需要顯式的構造函數，Jackson 會自動處理屬性的綁定
 }

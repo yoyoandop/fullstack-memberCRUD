@@ -23,11 +23,11 @@ public class UserdataService {
     }
 
 
-    public Long getUserIdByEmail(String email) {
+/*    public Long getUserIdByEmail(String email) {
         Userdata user = userdataRepository.findByEmail(email);
         return (user != null) ? user.getId() : null; // 返回用户 ID 或 null
     }
-
+*/
     public List<String> getRolesByEmail(String email) {
         Userdata user = userdataRepository.findByEmail(email);
         return (user != null) ? user.getRoles() : null; // 返回用户角色
@@ -43,7 +43,7 @@ public class UserdataService {
 
         // 如果角色为空，则分配默认角色
         if (userdata.getRoles() == null || userdata.getRoles().isEmpty()) {
-            userdata.setRoles(Collections.singletonList("ROLE_USER")); // 默认角色
+            userdata.setRoles(Collections.singletonList("guest")); // 默认角色
         }
 
         // 对密码进行加密

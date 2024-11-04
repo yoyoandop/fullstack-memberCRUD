@@ -37,7 +37,7 @@ public class AuthController {
     @PostMapping("/auth/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authRequest) throws Exception {
         try {
-            // 使用 email 登录
+            // 使用 email password登录
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.email(), authRequest.password())
             );

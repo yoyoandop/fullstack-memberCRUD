@@ -51,6 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users").hasAuthority("admin") // 只有 admin 角色的用户可以访问 /users
                 .antMatchers("/user").permitAll()
                 .antMatchers("/user/{id}").permitAll()
+                .antMatchers("/api/comics").permitAll()
+                .antMatchers("/api/comics/title").permitAll()
+                .antMatchers("/api/comics/images").permitAll()
+                .antMatchers("/{comicId}/images").permitAll()
                 .anyRequest().authenticated() // 其他请求需要身份验证
                 .and()
                 .sessionManagement()

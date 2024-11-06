@@ -41,6 +41,7 @@ public class ImageController {
             Comic comic = imageService.uploadComic(title, files);
             Map<String, Object> response = new HashMap<>();
             response.put("id", comic.getId());
+            response.put("title", comic.getTitle());
             response.put("status", "success");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -51,15 +52,18 @@ public class ImageController {
     }
 
     // 獲取所有漫畫
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Comic>> getAllComics() {
         return ResponseEntity.ok(imageService.getAllComics());
     }
 
     // 獲取特定漫畫的所有圖片
     @GetMapping("/{comicId}/images")
-    public ResponseEntity<List<Image>> getComicImages(@PathVariable Long comicId) {
-        return ResponseEntity.ok(imageService.getComicImages(comicId));
+    public ResponseEntity<?> getComicImages(@PathVariable Long comicId) {
+        List<Image> images = imageService.getComicImages(comicId);
+        if (images.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "該漫畫的圖片不存在"));
+        }
+        return ResponseEntity.ok(images);
     }
 }
-

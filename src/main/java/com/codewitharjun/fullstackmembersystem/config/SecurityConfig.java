@@ -48,13 +48,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register").permitAll() // 允许所有用户访问注册端点
                 .antMatchers("/auth/login").permitAll() // 允许所有用户访问登录端点
                 .antMatchers("/users").permitAll()
-                .antMatchers("/users").hasAuthority("admin") // 只有 admin 角色的用户可以访问 /users
+                //.antMatchers("/users").hasAuthority("admin") // 只有 admin 角色的用户可以访问 /users
                 .antMatchers("/user").permitAll()
                 .antMatchers("/user/{id}").permitAll()
+                .antMatchers("/users/username/{username}").permitAll()
                 .antMatchers("/api/comics").permitAll()
                 .antMatchers("/api/comics/title").permitAll()
                 .antMatchers("/api/comics/images").permitAll()
                 .antMatchers("/{comicId}/images").permitAll()
+
+                .antMatchers("/api/comics/all").permitAll()
+                .antMatchers("/api/comics/{id}/images").permitAll()
                 .anyRequest().authenticated() // 其他请求需要身份验证
                 .and()
                 .sessionManagement()

@@ -6,6 +6,7 @@ import com.codewitharjun.fullstackmembersystem.repository.ComicRepository;
 import com.codewitharjun.fullstackmembersystem.repository.ImageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,75 +22,82 @@ public class ImageService {
     private final ComicRepository comicRepository;
     private final ImageRepository imageRepository;
 
-    // Constructor injection for dependencies
+    @Value("${image.upload.dir}")
+    private String uploadDirPath; // 這會被設置為 spring.servlet.multipart.location 中的值
+
     public ImageService(ComicRepository comicRepository, ImageRepository imageRepository) {
         this.comicRepository = comicRepository;
         this.imageRepository = imageRepository;
     }
 
-    // Upload comic and its associated images
+    // 上傳漫畫和它的圖片
     public Comic uploadComic(String title, List<MultipartFile> files) {
-        // Create a new Comic instance
         Comic comic = new Comic(title);
-        comicRepository.save(comic); // Save comic to get its ID
+        comicRepository.save(comic);
 
         List<Image> images = new ArrayList<>();
         for (MultipartFile file : files) {
-            String filePath = saveImage(file, title); // Save image and get path
-            if (filePath != null) { // Only add image if saved successfully
-                Image image = new Image(file.getOriginalFilename(), filePath, comic); // Create Image instance
+            logger.info("正在上傳文件: {}", file.getOriginalFilename());  // 檢查是否收到文件
+            String filePath = saveImage(file, title);
+            if (filePath != null) {
+                Image image = new Image(file.getOriginalFilename(), filePath, comic);
                 images.add(image);
             }
         }
         comic.setImages(images);
-        imageRepository.saveAll(images); // Save all images related to the comic
-        return comic; // Return the saved comic
+        imageRepository.saveAll(images);
+        return comic;
     }
 
-    // Retrieve all comics
+    // 獲取所有漫畫
     public List<Comic> getAllComics() {
         return comicRepository.findAll();
     }
 
-    // Retrieve all images for a specific comic
+    // 根據漫畫 ID 獲取該漫畫的所有圖片
     public List<Image> getComicImages(Long comicId) {
         return imageRepository.findByComicId(comicId);
     }
 
-    // Save image to disk
+    // 保存圖片到磁碟
     private String saveImage(MultipartFile file, String comicTitle) {
-        // Check if content type is null
         String contentType = file.getContentType();
         if (contentType == null || !isValidImageType(contentType)) {
-            logger.error("Invalid or null file type: {}", contentType);
-            return null; // Return null if invalid file type or content type is null
+            logger.error("無效或為空的文件類型: {}", contentType);
+            return null;
         }
 
-        // Construct upload directory path
-        String uploadDirPath = "C:/Users/POWER USER/OneDrive/桌面/github/fullstack-memberCRUD/uploads/" + comicTitle;
-        File comicDir = new File(uploadDirPath);
+        // 目標資料夾路徑：基於 uploadDirPath + 漫畫名稱
+        String uploadDir = uploadDirPath + "/" + comicTitle;
+        File comicDir = new File(uploadDir);
 
-        if (!comicDir.exists() && !comicDir.mkdirs()) {
-            logger.warn("Failed to create directory: {}", comicDir.getAbsolutePath());
-            return null; // Return null if directory creation fails
+        // 如果資料夾不存在，則創建它
+        if (!comicDir.exists()) {
+            boolean dirCreated = comicDir.mkdirs();
+            if (!dirCreated) {
+                logger.error("無法創建資料夾: {}", comicDir.getAbsolutePath());
+                return null;
+            }
+            logger.info("成功創建資料夾: {}", comicDir.getAbsolutePath());
         }
 
-        // Define the file path for the image
+        // 組合完整的檔案路徑
         String filePath = comicDir.getPath() + "/" + file.getOriginalFilename();
+
         try {
-            // Write file to the new directory
+            // 保存文件到磁碟
             file.transferTo(new File(filePath));
-            logger.info("Saved image to: {}", filePath);
+            logger.info("成功保存圖片到: {}", filePath);
         } catch (IOException e) {
-            // Handle error
-            logger.error("Error saving image: {}", e.getMessage(), e);
-            return null; // Return null if file transfer fails
+            logger.error("保存圖片時發生錯誤: {}", e.getMessage(), e);
+            return null;
         }
-        return filePath; // Return the saved file path
+
+        return filePath;
     }
 
-    // Validate the uploaded image type
+    // 檢查上傳的文件是否為有效的圖片類型
     private boolean isValidImageType(String contentType) {
-        return "image/jpeg".equals(contentType) || "image/png".equals(contentType); // Extend as needed
+        return "image/jpeg".equals(contentType) || "image/png".equals(contentType);
     }
 }

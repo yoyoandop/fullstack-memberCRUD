@@ -43,4 +43,13 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+
+
+    // 根據用戶名查詢用戶
+    public List<User> getUsersByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+
+
 }

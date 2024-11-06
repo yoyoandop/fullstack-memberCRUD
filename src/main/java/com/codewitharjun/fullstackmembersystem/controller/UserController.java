@@ -40,4 +40,13 @@ public class UserController {
         userService.deleteUser(id);
         return  "User with id "+id+" has been deleted success.";
     }
+
+
+    // 新的 API，用來根據 username 查詢用戶
+    @GetMapping("/users/username/{username}")
+    public List<User> getUsersByUsername(@PathVariable String username) {
+        return userService.getUsersByUsername(username);
+    }
+
+
 }

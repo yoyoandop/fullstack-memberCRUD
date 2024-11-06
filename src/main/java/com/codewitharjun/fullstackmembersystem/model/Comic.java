@@ -1,5 +1,6 @@
 package com.codewitharjun.fullstackmembersystem.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference; // 引入這個包
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class Comic {
     private String title; // 漫畫書名
 
     @OneToMany(mappedBy = "comic", cascade = CascadeType.ALL)
+    @JsonManagedReference // 加入這個註解
     private List<Image> images = new ArrayList<>(); // 漫畫的所有圖片
 
     public Comic() {

@@ -54,7 +54,7 @@ export default defineComponent({
         };
         console.log('Request Headers:', headers); // 打印請求頭
 
-        const message = await registerUser(userData.value, headers); // 传递请求头
+        const message = await registerUser(userData.value); // 传递请求头
         alert(message); // 或者其他方式通知用戶
       } catch (error: any) {
         console.error('Error during registration:', error); // 打印錯誤信息
